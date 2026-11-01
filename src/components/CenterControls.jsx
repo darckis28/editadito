@@ -1,0 +1,4 @@
+import React from 'react';
+export default function CenterControls({disabled,onCenter}){
+ return <div className="centerControls" role="group" aria-label="Centrar cuadro en la hoja">{[['horizontal','Centrar horizontalmente'],['vertical','Centrar verticalmente'],['both','Centrar en ambos ejes']].map(([axis,label])=><button key={axis} type="button" disabled={disabled} aria-label={label} title={label} onClick={()=>onCenter(axis)}><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" opacity=".4"/>{axis!=='vertical'&&<><path d="M12 5v14M5 12h3m-2-2 2 2-2 2M19 12h-3m2-2-2 2 2 2"/></>}{axis!=='horizontal'&&<path d="M5 12h14M12 5v3m-2-2 2 2 2-2M12 19v-3m-2 2 2-2 2 2"/>}</svg></button>)}</div>;
+}

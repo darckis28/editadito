@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';import fs from 'node:fs';
+import {m,demo,bytes} from '../public/engine.js';import {editBlock,blocksOf} from '../public/block-editor.js';import {imageToPDF} from '../public/image-pdf.js';
+const extract=d=>{const p=d.loadPage(0),s=p.toStructuredText(),t=s.asText();s.destroy();p.destroy();return t;};
+let d=demo();editBlock(d,0,{line:2,text:'Ahora puedo escribir muchas más palabras y ocupar varias líneas dentro del cuadro ampliado.',box:[50,400,420,510],style:{font:'Times-Roman',size:18,bold:true,italic:true,underline:true,color:[1,0,0]}});
+assert(!extract(d).includes('Hola, este texto'));assert(extract(d).includes('Ahora puedo'));let p=d.loadPage(0),blocks=blocksOf(p);p.destroy();assert(blocks[2].rects.length>1);assert.equal(blocks[2].underline,true);
+d=m.Document.openDocument(bytes(d),'application/pdf');editBlock(d,0,{line:2,text:'Reemplazado',box:[50,400,420,510],style:{underline:false}});assert(!extract(d).includes('Ahora puedo'));assert(extract(d).includes('Reemplazado'));
+editBlock(d,0,{line:null,text:'Texto añadido',box:[70,550,400,610],style:{size:20,color:[0,0,1]}});p=d.loadPage(0);assert.equal(blocksOf(p).at(-1).text,'Texto añadido');p.destroy();editBlock(d,0,{line:8,remove:true,box:[70,550,400,610]});assert(!extract(d).includes('Texto añadido'));
+assert.throws(()=>editBlock(d,0,{line:2,text:'Mucho texto '.repeat(30),box:[50,400,100,430]}),/altura/);
+let im=imageToPDF(fs.readFileSync('public/ejemplo-imagen.png'),[{text:'Nombre: Maria Perez',box:[100,388,507,426],baseline:426}]);editBlock(im,0,{line:0,text:'Nombre nuevo con más palabras',box:[42.5,160,500,240],style:{size:16}});assert(!extract(im).includes('Maria Perez'));assert(extract(im).includes('Nombre nuevo'));
+console.log('PASS multiline resize, styles, save/reopen, replace, add/delete, overflow and OCR');
+const grown=demo();editBlock(grown,0,{line:2,text:'Primera línea\nSegunda línea\nTercera línea',box:[50,400,400,425],autoGrow:true});
+const gp=grown.loadPage(0),gb=blocksOf(gp)[2];assert(gb.box[3]-gb.box[1]>=gb.size*1.3*3-.01);gp.destroy();
+assert(extract(grown).includes('Tercera'));assert(!extract(grown).includes('Hola, este texto'));
+console.log('PASS automatic height expansion saves all lines without original text.');

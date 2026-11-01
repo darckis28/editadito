@@ -1,0 +1,5 @@
+import {Document,Packer,Paragraph,TextRun} from 'docx';
+export async function createWord(pages){
+ const sections=pages.map(page=>({properties:{page:{size:{width:Math.round((page.box[2]-page.box[0])*20),height:Math.round((page.box[3]-page.box[1])*20)},margin:{top:720,bottom:720,left:720,right:720}}},children:page.lines.length?[...page.lines].sort((a,b)=>Math.abs(a.box[1]-b.box[1])>3?a.box[1]-b.box[1]:a.box[0]-b.box[0]).map(line=>new Paragraph({alignment:line.alignment==='justify'?'both':(line.alignment||'left'),spacing:{after:80},children:line.text.split('\n').map((part,i)=>new TextRun({text:part,break:i?1:0,color:(line.color||[0,0,0]).map(c=>Math.round(c*255).toString(16).padStart(2,'0')).join(''),underline:line.underline?{}:undefined,font:/times|serif|roman|georgia/i.test(line.font)?'Times New Roman':/courier|mono/i.test(line.font)?'Courier New':'Arial',size:Math.max(12,Math.round(line.size*2)),bold:/bold|heavy|black/i.test(line.font),italics:/italic|oblique/i.test(line.font)}))})):[new Paragraph('')]}));
+ return Packer.toBlob(new Document({sections}));
+}

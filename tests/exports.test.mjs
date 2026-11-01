@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {demo,bytes,linesOf,describe,similarFontName,compatibleFont,m} from '../public/engine.js';
+import {createWord} from '../src/components/wordExport.js';
+for(const [name,want] of [['Cambria-BoldItalic','Times-BoldItalic'],['Consolas','Courier'],['Arial-Bold','Helvetica-Bold']])assert.equal(similarFontName(name),want);
+const subset={getName:()=> 'Times-BoldItalic',isBold:()=>true,isItalic:()=>true,isSerif:()=>true,encodeCharacter:()=>0};
+const fallback=compatibleFont(subset,'¡Perú!');assert.equal(fallback.getName(),'Times-BoldItalic');assert(fallback.encodeCharacter(241));fallback.destroy();
+const d=demo(),p=d.loadPage(0);const pages=[{box:p.getBounds(),lines:linesOf(p).map(describe)}];
+const blob=await createWord(pages);fs.writeFileSync('/tmp/export-test.docx',Buffer.from(await blob.arrayBuffer()));fs.writeFileSync('/tmp/demo-test.pdf',bytes(d));
+console.log('PASS font family/style fallback and DOCX creation');

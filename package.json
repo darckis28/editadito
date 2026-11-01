@@ -1,0 +1,23 @@
+{
+  "name": "editadito-pdf",
+  "version": "1.0.0",
+  "description": "Editor web de PDF creado por Andi Aguirre",
+  "main": "index.js",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build"
+  },
+  "keywords": [],
+  "author": "Andi Aguirre",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "dependencies": {
+    "@astrojs/react": "^7.1.2",
+    "astro": "^7.4.4",
+    "docx": "^9.15.1",
+    "mupdf": "^1.28.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "tesseract.js": "^7.0.0"
+  }
+}

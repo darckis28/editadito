@@ -1,0 +1,5 @@
+Tesseract.js and Tesseract.js-core are distributed under Apache-2.0.
+See LICENSE-TESSERACT.md, core/LICENSE and worker.min.js.LICENSE.txt.
+Spanish model: @tesseract.js-data/spa@1.0.0/4.0.0_best_int/spa.traineddata.gz
+Source: https://github.com/naptha/tessdata
+Tesseract language data: https://github.com/tesseract-ocr/tessdata_best (Apache-2.0).
