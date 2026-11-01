@@ -19,6 +19,8 @@ npm run build
 
 El resultado está en `dist/`. Puedes publicarlo en un alojamiento estático en la raíz de un dominio, por ejemplo Netlify: comando `npm run build`, carpeta `dist`. Los archivos `.wasm` deben servirse como `application/wasm`. Las rutas de los motores empiezan por `/`; GitHub Pages bajo `/nombre-repositorio/` requiere adaptar esas rutas.
 
+La web incluye `robots.txt`, un sitemap XML y metadatos para motores de búsqueda. Si cambias el dominio, actualiza las URL canónicas en `src/pages/index.astro`, `public/robots.txt` y `public/sitemap.xml`. Para solicitar la indexación, registra el dominio en Google Search Console y envía el sitemap.
+
 ## Subir a GitHub
 
 1. Descomprime `Editadito-PDF-GitHub.zip`.
